@@ -111,10 +111,14 @@ namespace Tic_Tac_Toe
         public static string Name { get; set; }
         public static char Flage { get; set; }
 
-        public bool checkIfPlayerWon(char[,] GameBoard)
+    }
+
+    class Player : generalPlayer 
+    {
+        public static bool checkIfPlayerWon()
         {
-            int height = GameBoard.GetLength(0);
-            int width = GameBoard.GetLength(1);
+            int height = Board.gameBoard.GetLength(0);
+            int width = Board.gameBoard.GetLength(1);
 
             if (height != width)
                 throw new Exception("The board is not square!");
@@ -126,18 +130,12 @@ namespace Tic_Tac_Toe
 
                 for (int x = 0; x < width; x++)
                 {
-                    if (GameBoard[y, x] == generalPlayer.Flage)
+                    if (Board.gameBoard[y, x] == generalPlayer.Flage)
                         rowSum++;
                 }
                 if (rowSum == width)
                     return true;
             }
         }
-
-    }
-
-    class Player : generalPlayer 
-    {
-        
     }
 }
