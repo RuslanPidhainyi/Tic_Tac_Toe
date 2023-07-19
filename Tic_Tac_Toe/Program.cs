@@ -5,14 +5,33 @@ namespace Tic_Tac_Toe
     class Program
     {
         static void Main(string[] args)
-        {
-            Board.DrawBoard();
+        {         
+            //bool start = true;
 
-            Game.Round();
+            //do
+            //{
+                
+
+            //    Board.DrawBoard();
+
+            //    Game.Round();
+
+            //    Console.WriteLine("\nJeżelei chcesz wyjść napisz \"x\", jeżeli  chcesz kontynować klikni \"Enter\" \n");
+            //    start = Console.ReadLine() == "x";
+            //}
+            //while (!start);
+
            
+
+
+
+            Console.Clear();
+            Board.DrawBoard();
+            Console.WriteLine("Game ended!"); 
         }
     }
 
+    //////////////////////////////////////////////////////////////////////////////////////////////////
 
     class Board
     {
@@ -31,7 +50,7 @@ namespace Tic_Tac_Toe
 
 
 
-        public static void DrawBoard()
+        public static void DrawBoard(/*char[,] board*/)
         {
             for (int y = 0; y < gameBoard.GetLength(0); y++)
             {
@@ -43,11 +62,11 @@ namespace Tic_Tac_Toe
             }
         }
     }
-                                     
 
+    //////////////////////////////////////////////////////////////////////////////////////////////////
 
-   class Game : Board
-   {
+    class Game : Board
+    {
 
         public static bool Player1_Won = false;
         public static bool Player2_Won = false;
@@ -59,7 +78,8 @@ namespace Tic_Tac_Toe
         {
             for (int round = 0; round < gameBoard.Length; round++)
             {
-                //Console.Clear();
+                Console.Clear();
+                DrawBoard();
 
                 if (PlayerIsNext) //player 1 move,
                 {
@@ -75,6 +95,49 @@ namespace Tic_Tac_Toe
                     break;
             }
         }
-   }
-   
+    }
+
+    
+
+    //////////////////////////////////////////////////////////////////////////////////////////////////
+
+    interface IMoving
+    {
+        bool MaleMove(char[,] startBoard, char[,] gameBoard); 
+    }
+
+    abstract class generalPlayer
+    {
+        public static string Name { get; set; }
+        public static char Flage { get; set; }
+
+        public bool checkIfPlayerWon(char[,] GameBoard)
+        {
+            int height = GameBoard.GetLength(0);
+            int width = GameBoard.GetLength(1);
+
+            if (height != width)
+                throw new Exception("The board is not square!");
+
+            // Check rows
+            for (int y = 0; y < height; y++)
+            {
+                int rowSum = 0;
+
+                for (int x = 0; x < width; x++)
+                {
+                    if (GameBoard[y, x] == generalPlayer.Flage)
+                        rowSum++;
+                }
+                if (rowSum == width)
+                    return true;
+            }
+        }
+
+    }
+
+    class Player : generalPlayer 
+    {
+        
+    }
 }
