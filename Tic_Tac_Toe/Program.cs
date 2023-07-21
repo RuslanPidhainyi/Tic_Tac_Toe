@@ -5,12 +5,12 @@ namespace Tic_Tac_Toe
     class Program
     {
         static void Main(string[] args)
-        {         
+        {
             //bool start = true;
 
             //do
             //{
-                
+
 
             //    Board.DrawBoard();
 
@@ -21,7 +21,8 @@ namespace Tic_Tac_Toe
             //}
             //while (!start);
 
-           
+            HumanPlayer you = new HumanPlayer();
+            AI bot = new AI();
 
 
 
@@ -31,7 +32,9 @@ namespace Tic_Tac_Toe
         }
     }
 
-    //////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     class Board
     {
@@ -83,6 +86,7 @@ namespace Tic_Tac_Toe
 
                 if (PlayerIsNext) //player 1 move,
                 {
+                    Console.WriteLine();
                     PlayerIsNext = true;
                 }
                 else //player 2 move,
@@ -97,45 +101,98 @@ namespace Tic_Tac_Toe
         }
     }
 
-    
+
 
     //////////////////////////////////////////////////////////////////////////////////////////////////
 
     interface IMoving
     {
-        bool MaleMove(char[,] startBoard, char[,] gameBoard); 
+        bool MakeMove(char[,] startBoard, char[,] gameBoard);
     }
 
-    abstract class generalPlayer
+
+    abstract public class generalPlay
     {
         public static string Name { get; set; }
         public static char Flage { get; set; }
 
-    }
-
-    class Player : generalPlayer 
-    {
-        public static bool checkIfPlayerWon()
+    
+        public static bool checkIfPlayerWon(char[,] gameBoard)
         {
-            int height = Board.gameBoard.GetLength(0);
-            int width = Board.gameBoard.GetLength(1);
+            int heightY = gameBoard.GetLength(0);
+            int widthX = gameBoard.GetLength(1);
 
-            if (height != width)
-                throw new Exception("The board is not square!");
+            if (heightY != widthX)
+                throw new Exception("The board is not square!"); 
+
 
             // Check rows
-            for (int y = 0; y < height; y++)
+            for (int y = 0; y < heightY; y++)
             {
                 int rowSum = 0;
 
-                for (int x = 0; x < width; x++)
+                for (int x = 0; x < widthX; x++)
                 {
-                    if (Board.gameBoard[y, x] == generalPlayer.Flage)
-                        rowSum++;
+                    if (gameBoard[y, x] == Flage)
+                        rowSum++;   
                 }
-                if (rowSum == width)
+                if (rowSum == widthX)
                     return true;
             }
+
+
+            // Check colms
+            for(int x=0; x < widthX;x++)
+            {
+                int colSum = 0;
+
+                for(int y = 0; y<heightY; y++)
+                {
+                    if (gameBoard[x, y] == Flage)
+                        colSum++;
+                }
+                if(colSum == heightY)
+                    return true;
+            }
+
+
+            //Check diagonals
+            int diagSumA = 0;
+            int diagSumB = 0;
+
+
+            for(int z = 0; z < widthX; z++)
+            {
+                if (gameBoard[z,z] == Flage)
+                    diagSumA++;
+                if (gameBoard[z, widthX - 1 - z] == Flage)
+                    diagSumB++;
+            }
+
+            if (diagSumA == widthX || diagSumB == widthX)
+                return true;
+
+            //Else, no win
+            return false;   
         }
+
+        //class HumanPlayer : generalPlay, IMoving
+        //{
+        //    public bool MakeMove(char[,] startBoard, char[,] gameBoard)
+        //    {
+        //        //Human move
+        //        return checkIfPlayerWon(gameBoard);
+        //    }
+        //}
+
+        class AI : generalPlay, IMoving
+        {
+            public bool MakeMove(char[,] startBoard, char[,] gameBoard)
+            {
+                //AI move
+                return checkIfPlayerWon(gameBoard);
+            }
+        }
+        
     }
 }
