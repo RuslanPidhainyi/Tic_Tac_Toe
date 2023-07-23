@@ -1,4 +1,5 @@
 ﻿using System.Numerics;
+using System;
 
 namespace Tic_Tac_Toe
 {
@@ -24,12 +25,23 @@ namespace Tic_Tac_Toe
             HumanPlayer you = new HumanPlayer();
             AI bot = new AI();
 
+            you.Name = "Player";
+            bot.Name = "PC";
+            you.Flage = 'x';
+            bot.Flage = 'y';
+            
+
+            
+
 
 
             Console.Clear();
             Board.DrawBoard();
+            Game.Round();
             Console.WriteLine("Game ended!"); 
         }
+
+        
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -113,11 +125,11 @@ namespace Tic_Tac_Toe
 
     abstract public class generalPlay
     {
-        public static string Name { get; set; }
-        public static char Flage { get; set; }
+        public  string Name { get; set; }
+        public  char Flage { get; set; }
 
     
-        public static bool checkIfPlayerWon(char[,] gameBoard)
+        public  bool checkIfPlayerWon(char[,] gameBoard)
         {
             int heightY = gameBoard.GetLength(0);
             int widthX = gameBoard.GetLength(1);
@@ -175,24 +187,23 @@ namespace Tic_Tac_Toe
             //Else, no win
             return false;   
         }
+    }
 
-        //class HumanPlayer : generalPlay, IMoving
-        //{
-        //    public bool MakeMove(char[,] startBoard, char[,] gameBoard)
-        //    {
-        //        //Human move
-        //        return checkIfPlayerWon(gameBoard);
-        //    }
-        //}
-
-        class AI : generalPlay, IMoving
+    class HumanPlayer : generalPlay, IMoving
+    {
+        public bool MakeMove(char[,] startBoard, char[,] gameBoard)
         {
-            public bool MakeMove(char[,] startBoard, char[,] gameBoard)
-            {
-                //AI move
-                return checkIfPlayerWon(gameBoard);
-            }
+            //Human: move
+            return checkIfPlayerWon(gameBoard);
         }
-        
+    }
+
+    class AI : generalPlay, IMoving
+    {
+        public bool MakeMove(char[,] startBoard, char[,] gameBoard)
+        {
+            //AI: move
+            return checkIfPlayerWon(gameBoard);
+        }
     }
 }
