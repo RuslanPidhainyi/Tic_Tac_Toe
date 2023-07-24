@@ -28,94 +28,83 @@ namespace Tic_Tac_Toe
             you.Name = "Player";
             bot.Name = "PC";
             you.Flage = 'x';
-            bot.Flage = 'y';
+            bot.Flage = 'o';
+
+            ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+            char[,] startBorad =
+            {
+                { '1', '2', '3' },
+                { '4', '5', '6' },
+                { '7', '8', '9' }
+            };
+
+
+            //gameBord = Dublication startBoard
+            char[,] gameBoard = startBorad.Clone() as char[,];
+
+           
+
+           bool Player1_Won = false;
+           bool Player2_Won = false;
+           bool PlayerIsNext = true; // true - player 1 move,
+                                     // false - player 2 move
+
+            //////////////////////////////////////////////////////////////////////////////////////////////////
+
+            //One move = One Round
             
-
             
+                for (int round = 0; round < gameBoard.Length; round++)
+                {
+                    Console.Clear();
+                    DrawBoard(gameBoard);
 
+                    if (PlayerIsNext) //player 1 move,
+                    {
+                        Console.WriteLine(you.Name + " move");
+                        Player1_Won = you.MakeMove(startBorad, gameBoard);
 
+                        PlayerIsNext = false;
+                    }
+                    else //player 2 move,
+                    {
+                        Console.WriteLine(you.Name + " move");
+                        Player2_Won = you.MakeMove(startBorad, gameBoard);
 
-            //Console.Clear();
-            //Board.DrawBoard();
-            //Game.Round();
-            //Console.WriteLine("Game ended!"); 
+                        PlayerIsNext = true;
+                    }
 
+                    //Finished
+                    if (Player1_Won || Player2_Won)
+                        break;
+                }
 
+            ///////////////////////////////////////////////////////////////////////////////////////////////////////
+
+            // End the game
+            Console.Clear();
+            DrawBoard(gameBoard);
+            Console.Write("Game ended! ");
         }
 
-        
-    }
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        ///////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    class Board : Program
-    {
-
-        public static char[,] startBorad =
+        static void DrawBoard(char[,] board)
         {
-            { '1', ' ', '2', ' ', '3' },
-            { '4', ' ', '5', ' ', '6' },
-            { '7', ' ', '8', ' ', '9' }
-        };
-
-
-
-        //gameBord = Dublication startBoard
-        public static char[,] gameBoard = startBorad.Clone() as char[,];
-
-
-
-        public static void DrawBoard(/*char[,] board*/)
-        {
-            for (int y = 0; y < gameBoard.GetLength(0); y++)
+            for (int y = 0; y < board.GetLength(0); y++)
             {
-                for (int x = 0; x < gameBoard.GetLength(1); x++)
+                for (int x = 0; x < board.GetLength(1); x++)
                 {
-                    Console.Write(gameBoard[y, x]);
+                    Console.Write(board[y, x]);
                 }
                 Console.WriteLine("\n");
             }
         }
     }
-
-    //////////////////////////////////////////////////////////////////////////////////////////////////
-
-    class Game : Board
-    {
-
-        public static bool Player1_Won = false;
-        public static bool Player2_Won = false;
-        public static bool PlayerIsNext = true;// true - player 1 move,
-                                                // false - player 2 move
-
-        //One move = One Round
-        public static void Round()//Move
-        {
-            for (int round = 0; round < gameBoard.Length; round++)
-            {
-                Console.Clear();
-                DrawBoard();
-
-                if (PlayerIsNext) //player 1 move,
-                {
-                    Console.WriteLine();
-                    PlayerIsNext = true;
-                }
-                else //player 2 move,
-                {
-                    PlayerIsNext = false;
-                }
-
-                //Finished
-                if (Player1_Won || Player2_Won)
-                    break;
-            }
-        }
-    }
-
-
 
     //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -137,7 +126,8 @@ namespace Tic_Tac_Toe
             int widthX = gameBoard.GetLength(1);
 
             if (heightY != widthX)
-                throw new Exception("The board is not square!"); 
+                //throw new Exception("The board is not square!"); ;
+
 
 
             // Check rows
@@ -162,7 +152,7 @@ namespace Tic_Tac_Toe
 
                 for(int y = 0; y<heightY; y++)
                 {
-                    if (gameBoard[x, y] == Flage)
+                    if (gameBoard[y, x] == Flage)
                         colSum++;
                 }
                 if(colSum == heightY)
@@ -175,9 +165,9 @@ namespace Tic_Tac_Toe
             int diagSumB = 0;
 
 
-            for(int z = 0; z < widthX; z++)
+            for (int z = 0; z < widthX; z++)
             {
-                if (gameBoard[z,z] == Flage)
+                if (gameBoard[z, z] == Flage)
                     diagSumA++;
                 if (gameBoard[z, widthX - 1 - z] == Flage)
                     diagSumB++;
